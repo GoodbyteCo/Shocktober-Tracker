@@ -1,9 +1,19 @@
 <template>
+    <h2>{{`Shock${monthName.slice(2)}`}}</h2>
     <section id="calender">
         <div v-for="calVal in calender"
             :key="calVal.date"
+            class="date"
         >
-        <span v-if="!calVal.isPadding">{{calVal.date + 1}}</span>
+        <div class="single-date" v-if="!calVal.isPadding">
+            <div class="date-info"  >
+                <div class="dateNum">{{calVal.date + 1}}</div>
+                <div v-if="filmExist(calVal.date)">{{listToDisplay.get(calVal.date)}}</div>
+            </div>
+            <div v-for="[username, filmList] in userFilmList.entries()">
+                <div :class="filmList.get(listToDisplay.get(calVal.date) ?? '')?.toLowerCase()">{{username}}</div>
+            </div>
+        </div>
 
         </div>
 
@@ -12,7 +22,8 @@
 </template>
 
 <script setup lang="ts">
-    import type { ListFilm } from '@/types';
+    import {computed} from 'vue'
+    import type { ListFilm, WatchStatus } from '@/types';
     import { getDaysInMonth, firstDayInMonthIndex } from '@/utils'
 
     type CalenderItem = {
@@ -23,15 +34,26 @@
     type CalenderProps = {
         year: number,
         month: number
-        listToDisplay: ListFilm[]
+        listToDisplay: Map<number,string>
+        userFilmList: Map<string,Map<string,WatchStatus>>
+    }
+    
+    const props = defineProps<CalenderProps>()
+
+    const filmExist = (date: number)=> {
+        return props.listToDisplay.has(date)
     }
 
-    const props = defineProps<CalenderProps>()
+    const statusClass = (status: WatchStatus) => {
+        
+    }
 
     const numberOfDays = getDaysInMonth(props.year, props.month)
     const firstDay = firstDayInMonthIndex(props.year, props.month)
     console.log(numberOfDays)
     console.log(firstDay)
+
+    const monthName = new Date(props.year,props.month,0).toLocaleDateString('en-US',{month: 'long'})
 
     const paddingCalenderItems = Array(firstDay).fill("").map<CalenderItem>((_val, index) => {
         return {isPadding: true, date: index - firstDay}
@@ -45,9 +67,39 @@
 </script>
 
 <style scoped>
+
+    h2 {
+        color: white 
+    }
     #calender {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        gap: 5px
+        justify-content: stretch;
+        gap: .3em;
+    }
+    .single-date {
+        margin: .3em;
+    }
+    .date-info {
+        display: flex;
+        gap: .4em;
+    }
+
+    .date {
+        width: 100%;
+        height: 8em;
+        border: 2px solid white;
+        color: white;
+        /* padding: .3em; */
+    }
+
+    .not {
+        color: red
+    }
+    .ontime {
+        color: green
+    }
+    .late {
+        color: yellow
     }
 </style>
