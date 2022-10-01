@@ -1,39 +1,6 @@
 
 <template>
-  <form @submit.prevent>
-		<fieldset>
-			<legend>Graph settings</legend>
-
-			<div class="username">
-				<label for="username">Letterboxd username</label>
-				<input type="text"
-					id="username" 
-					name="u"
-					placeholder="ex: holopollock"
-					:value="users"
-					@change="users = ($event.target as HTMLInputElement).value"
-					v-on:blur="users = ($event.target as HTMLInputElement).value" 
-					v-on:keyup.enter="users = ($event.target as HTMLInputElement).value"
-					required
-				>
-			</div>
-
-      <div class="listName">
-				<label for="listName">List</label>
-				<input type="text"
-					id="list" 
-					name="ln"
-					placeholder="holopollock/list/full-shocktober-2022"
-					:value="listName"
-					@change="listName = ($event.target as HTMLInputElement).value"
-					v-on:blur="listName = ($event.target as HTMLInputElement).value" 
-					v-on:keyup.enter="listName = ($event.target as HTMLInputElement).value"
-					required
-				>
-			</div>
-
-		</fieldset>
-	</form>
+  <controls/>
   <calender :month="month" :year="year" :list-to-display="[]"/>
 </template>
 
@@ -42,34 +9,28 @@
   import { ref, watch } from 'vue'
   import type { ListFilm, UserFilmWatch } from '@/types'
   import Calender from './components/Calender.vue';
-  const users = ref('')
-  const listName = ref('')
-  const userNames = ref<string[]>([])
+  import Controls from './components/Controls.vue';
+  import { useControlsStore } from './stores/controls';
+import { getDaysInMonth } from '@/utils';
+  const controls = useControlsStore()
+  const usersFilmWatch = ref<UserFilmWatch>({})
+  const filmList = ref<ListFilm[]>([])
   const year = ref(new Date().getFullYear())
   const month = ref(9)
+  const numberOfDays = getDaysInMonth(year.value, month.value)
 
-  watch(users, (users, prevUsers) => {
-    if (users != prevUsers) {
-      userNames.value = users.split(',')
+
+  watch(controls, (prevControls, controls) => {
+    console.log(controls)
+    if (controls.userNames != prevControls.userNames) {
+      getFilmListAndWatchStatus(controls.userNameList, controls.listName)
+    }
+    if (controls.listName != prevControls.listName) {
+      getFilmListAndWatchStatus(controls.userNameList, controls.listName)
     }
   })
 
-  watch(userNames, (userNames, prevUserNames) => {
-    getUserWatchStatus(userNames).then(filmWatched => {
-      console.log(filmWatched)
-    })
-
-  })
-
-  watch(listName, (listName, prevListName) => {
-    if (listName != prevListName) {
-      getCalender(listName).then(calender => {
-        console.log(calender)
-      }) 
-    }
-  })
-
-  const getCalender = async (listName: string) => {
+  const getList = async (listName: string) => {
     const filmList = await (
       await fetch(`/api/list?list=${listName}`)
     ).json()
@@ -83,6 +44,26 @@
         await fetch(`/api?${userNameUrl}&year=${year.value}&month=${month.value}`)
       ).json()
     return filmsWatchedForUsers as UserFilmWatch
+  }
+
+  const getFilmListAndWatchStatus = async (userNames: string[], listName: string) => {
+    const listOfShocktoberFilms = await getList(listName)
+    const userFilmsWatched = await getUserWatchStatus(userNames)
+    const numberOfDayPerFilm = Math.floor(numberOfDays / listOfShocktoberFilms.length)
+    const filmsToWatch = listOfShocktoberFilms.reduce<Set<string>>((set, currentFilm) => {
+      set.add(currentFilm.film_name)
+      return set
+    }, new Set())
+    const mapOfWhenShouldWatch = listOfShocktoberFilms.reduce<Map<number,string>>((map, currentFilm, indexList) => {
+      Array(numberOfDayPerFilm).forEach((_val, index) => {
+          map.set(index+1*indexList, currentFilm.film_name)
+      })
+      return map
+    }, new Map())
+    console.log(mapOfWhenShouldWatch)
+
+
+
   }
 
   // const getList = 
