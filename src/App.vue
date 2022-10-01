@@ -31,7 +31,7 @@
   const users = ref('')
   const userNames = ref<string[]>([])
   const year = ref(new Date().getFullYear())
-  const month = ref(10)
+  const month = ref(9)
 
   watch(users, (users, prevUsers) => {
     if (users != prevUsers) {
