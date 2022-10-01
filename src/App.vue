@@ -20,12 +20,8 @@ import { getDaysInMonth } from '@/utils';
   const numberOfDays = getDaysInMonth(year.value, month.value)
 
 
-  watch(controls, (prevControls, controls) => {
-    console.log(controls)
-    if (controls.userNames != prevControls.userNames) {
-      getFilmListAndWatchStatus(controls.userNameList, controls.listName)
-    }
-    if (controls.listName != prevControls.listName) {
+  watch(controls, (controls) => {
+    if(controls.listName.length !== 0 && controls.userNames != undefined){
       getFilmListAndWatchStatus(controls.userNameList, controls.listName)
     }
   })
