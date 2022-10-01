@@ -93,6 +93,7 @@ import { getDaysInMonth } from '@/utils';
 <style>
   html {
     background-color: #1b2127;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
   }
 
 </style>

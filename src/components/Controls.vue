@@ -51,3 +51,54 @@
         })
     }
 </script>
+
+<style scoped>
+
+
+    fieldset {
+        color: #ebebeb
+    }
+    input {
+        font-size: 1.1rem;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        line-height: 2.8rem;
+        background: #ebebeb;
+        padding: 0 1rem;
+        min-width: 200px;
+        border: 0;
+        border-radius: 4px;
+        outline: none;
+    }
+    label {
+        color: #ebebeb
+    }
+
+    fieldset div{
+        margin: 1rem 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .3em
+    }
+
+    button {
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-size: .8rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        line-height: 2.8rem;
+        display: inline-block;
+        cursor: pointer;
+        padding: 0 1rem;
+        border: 0;
+        border-radius: 4px;
+        outline: none;
+        color: #1b2127;
+        text-align: center;
+        margin: auto;
+    }
+</style>
