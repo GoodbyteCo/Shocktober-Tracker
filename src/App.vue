@@ -71,7 +71,7 @@
 
   const getCalender = async (listName: string) => {
     const filmList = await (
-      await fetch(`/api?list=${listName}`)
+      await fetch(`/api/list?list=${listName}`)
     ).json()
 
     return filmList as ListFilm[]
