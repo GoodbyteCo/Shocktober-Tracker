@@ -18,6 +18,20 @@
 				>
 			</div>
 
+      <div class="listName">
+				<label for="listName">List</label>
+				<input type="text"
+					id="list" 
+					name="ln"
+					placeholder="holopollock/list/full-shocktober-2022"
+					:value="listName"
+					@change="listName = ($event.target as HTMLInputElement).value"
+					v-on:blur="listName = ($event.target as HTMLInputElement).value" 
+					v-on:keyup.enter="listName = ($event.target as HTMLInputElement).value"
+					required
+				>
+			</div>
+
 		</fieldset>
 	</form>
   <calender :month="month" :year="year" :list-to-display="[]"/>
@@ -29,6 +43,7 @@
   import type { ListFilm, UserFilmWatch } from '@/types'
   import Calender from './components/Calender.vue';
   const users = ref('')
+  const listName = ref('')
   const userNames = ref<string[]>([])
   const year = ref(new Date().getFullYear())
   const month = ref(9)
@@ -46,9 +61,15 @@
 
   })
 
+  watch(listName, (listName, prevListName) => {
+    if (listName != prevListName) {
+      getCalender(listName).then(calender => {
+        console.log(calender)
+      }) 
+    }
+  })
 
-
-  const getCalender = async (listName: string, userNames: string[]) => {
+  const getCalender = async (listName: string) => {
     const filmList = await (
       await fetch(`/api?list=${listName}`)
     ).json()
