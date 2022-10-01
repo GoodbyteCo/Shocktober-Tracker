@@ -1,6 +1,7 @@
 package shocktoberScrape
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -19,8 +20,8 @@ type filmDiaryEntryWithUser struct {
 }
 
 type filmDiaryEntry struct {
-	Day string
-	Name string
+	Day string `json:"day"`
+	Name string `json:"filmName"`
 }
 
 type channelValueSend struct {
@@ -59,11 +60,19 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	yearAsString, _ := strconv.Atoi(year[0])
 
 	
-	scrapeUserMonth(user,monthAsString,yearAsString)
+	userMap := scrapeUserMonth(user,monthAsString,yearAsString)
+
+	userMapAsJson, err := json.Marshal(userMap)
+	if err != nil {
+		http.Error(w, "no year", http.StatusBadRequest)
+		return
+	}
+
+	w.Write(userMapAsJson)
 
 }
 //https://letterboxd.com/holopollock/films/diary/for/2022/09/
-func scrapeUserMonth(users []string, month int, year int){
+func scrapeUserMonth(users []string, month int, year int) map[string][]filmDiaryEntry {
 	userMap := map[string][]filmDiaryEntry{}
 	ch := make(chan channelValueSend)
 	numberOfUsers := len(users)
@@ -90,7 +99,7 @@ func scrapeUserMonth(users []string, month int, year int){
 		}
 	}
 	sugar.Infoln(userMap)
-	return
+	return userMap
 }
 
 func scrapeUser(url string, ch chan channelValueSend, user string) {
@@ -135,4 +144,3 @@ func scrapeUser(url string, ch chan channelValueSend, user string) {
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
-
