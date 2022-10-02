@@ -12,7 +12,7 @@ node_modules
 dist
 dist-ssr
 coverage
-*.loca
+*.local
 
 /cypress/videos/
 /cypress/screenshots/
