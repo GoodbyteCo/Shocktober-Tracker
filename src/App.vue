@@ -1,6 +1,7 @@
 
 <template>
     <controls/>
+    <div class="loading" v-if="loading">Loading...</div>
     <calender :month="month" :year="year" :list-to-display="filmList" :user-film-list="usersFilmWatch"/>
 </template>
 
@@ -17,17 +18,19 @@
   const filmList = ref<Map<number,string>>(new Map())
   const year = ref(new Date().getFullYear())
   const month = ref(10)
+  const loading = ref<boolean | undefined>(undefined)
   const numberOfDays = getDaysInMonth(year.value, month.value)
 
 
   controls.$subscribe((mutation, state) => {
-    getFilmListAndWatchStatus(controls.userNameList, state.listName)
     window.history.replaceState(null, "", `?u=${controls.userNameList.join("&u=")}&list=${state.listName}`);
+    loading.value = true
+    getFilmListAndWatchStatus(controls.userNameList, state.listName)
   })
 
   const getList = async (listName: string) => {
     const filmList = await (
-      await fetch(`https://shocktober-tracker-goodbyte.vercel.app/api/list?list=${listName}`)
+      await fetch(`/api/list?list=${listName}`)
     ).json()
 
     return filmList as ListFilm[]
@@ -36,7 +39,7 @@
   const getUserWatchStatus = async (userNames: string[]) => {
     const userNameUrl = `user=${userNames.join("&user=")}`
     const filmsWatchedForUsers = await (
-        await fetch(`https://shocktober-tracker-goodbyte.vercel.app/api?${userNameUrl}&year=${year.value}&month=${month.value}`)
+        await fetch(`/api?${userNameUrl}&year=${year.value}&month=${month.value}`)
       ).json()
     return filmsWatchedForUsers as UserFilmWatch
   }
@@ -68,7 +71,6 @@
       return userMap
     }, new Map())
 
-    console.log(userFilmsWatched)
     userNames.forEach(userName => {
       (userFilmsWatched[userName] ?? []).forEach((filmWatch) => {
         const filmShouldWatch = mapOfWhenShouldWatch.get(Number(filmWatch.day)-1)
@@ -81,6 +83,7 @@
     })
 
     usersFilmWatch.value = userWatchStatus
+    loading.value = false
 
 
   }
@@ -100,4 +103,13 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
   }
 
+</style>
+
+<style scoped>
+  .loading {
+    color: var(--off-white);
+    margin: 10px 0;
+    text-align: center;
+    font-size: 1.2rem;
+  }
 </style>
