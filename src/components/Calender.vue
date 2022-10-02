@@ -8,10 +8,10 @@
         >
         <div class="single-date" v-if="!calVal.isPadding">
             <div  class="dateNum"><span :class="isToday(calVal.date) ? 'today': ''">{{calVal.date + 1}}</span></div>
-            <div class="date-info" v-if="filmExist(calVal.date)">{{listToDisplay.get(calVal.date)}}</div>
+            <a class="date-info" v-if="filmExist(calVal.date)" :href="`https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}`">{{listToDisplay.get(calVal.date)!.name}} </a>
             <template v-for="[username, filmList] in userFilmList.entries()">
                 <div class="userStatus">
-                    <div :class="filmList.get(listToDisplay.get(calVal.date) ?? '')?.toLowerCase()">{{username}}</div>
+                    <div :class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase()">{{username}}</div>
                 </div>
             </template>
         </div>
@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
     import {computed} from 'vue'
-    import type { ListFilm, WatchStatus } from '@/types';
+    import type { Film, WatchStatus } from '@/types';
     import { getDaysInMonth, firstDayInMonthIndex } from '@/utils'
     type CalenderItem = {
         isPadding: boolean
@@ -34,7 +34,7 @@
     type CalenderProps = {
         year: number,
         month: number
-        listToDisplay: Map<number,string>
+        listToDisplay: Map<number,Film>
         userFilmList: Map<string,Map<string,WatchStatus>>
     }
     
@@ -87,6 +87,14 @@
         text-align: center;
         font-size: .8em;
         margin-top: 5px;
+        color: var(--off-white);
+        display: block;
+        text-decoration: none;
+    }
+
+    .date-info:hover,.date-info:focus {
+        text-decoration: underline;
+        color:#40bcf4
     }
 
     .dateNum {

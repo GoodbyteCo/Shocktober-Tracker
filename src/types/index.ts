@@ -14,3 +14,8 @@ export type ListFilm = {
     list_position: number,
     list_url: string
   }
+
+export type Film = {
+  name: string, 
+  slug: string
+}

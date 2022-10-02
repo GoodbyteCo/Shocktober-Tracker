@@ -8,14 +8,14 @@
 
 <script setup lang="ts">
   import { ref, watch } from 'vue'
-  import type { ListFilm, UserFilmWatch, WatchStatus } from '@/types'
+  import type { ListFilm, UserFilmWatch, WatchStatus, Film } from '@/types'
   import Calender from './components/Calender.vue';
   import Controls from './components/Controls.vue';
   import { useControlsStore } from './stores/controls';
   import { getDaysInMonth } from '@/utils';
   const controls = useControlsStore()
   const usersFilmWatch = ref<Map<string,Map<string,WatchStatus>>>(new Map())
-  const filmList = ref<Map<number,string>>(new Map())
+  const filmList = ref<Map<number,Film>>(new Map())
   const year = ref(new Date().getFullYear())
   const month = ref(10)
   const loading = ref<boolean | undefined>(undefined)
@@ -54,9 +54,9 @@
       return set
     }, new Set())
     
-    const mapOfWhenShouldWatch = listOfShocktoberFilms.reduce<Map<number,string>>((map, currentFilm, indexList) => {
+    const mapOfWhenShouldWatch = listOfShocktoberFilms.reduce<Map<number,Film>>((map, currentFilm, indexList) => {
       for (let index = 0; index < numberOfDayPerFilm; index++) {
-        map.set(index+indexList*numberOfDayPerFilm, currentFilm.film_name)
+        map.set(index+indexList*numberOfDayPerFilm, {name: currentFilm.film_name, slug: currentFilm.list_url})
       }
       return map
     }, new Map())
@@ -73,7 +73,7 @@
 
     userNames.forEach(userName => {
       (userFilmsWatched[userName] ?? []).forEach((filmWatch) => {
-        const filmShouldWatch = mapOfWhenShouldWatch.get(Number(filmWatch.day)-1)
+        const filmShouldWatch = mapOfWhenShouldWatch.get(Number(filmWatch.day)-1)?.name
         if(filmShouldWatch === filmWatch.filmName) {
           userWatchStatus.get(userName)!.set(filmWatch.filmName, "OnTime")
         } else if (filmsToWatch.has(filmWatch.filmName)) {
