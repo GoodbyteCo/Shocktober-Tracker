@@ -4,6 +4,7 @@
         <div v-for="calVal in calender"
             :key="calVal.date"
             class="date"
+            :class="calVal.isPadding ? 'isCalPadding': ''"
         >
         <div class="single-date" v-if="!calVal.isPadding">
             <div  class="dateNum"><span :class="isToday(calVal.date) ? 'today': ''">{{calVal.date + 1}}</span></div>
@@ -114,6 +115,10 @@
         border: 2px solid white;
         color: white;
         /* padding: .3em; */
+    }
+
+    .isCalPadding {
+        border: none;
     }
 
     .not {
