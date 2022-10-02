@@ -1,7 +1,7 @@
-# shocktober-ts
+# Shocktober-Tracker
 
 
-A website to help you track your shocktober challange :)
+A website to help you track your shocktober challange :) using letterboxd and a fun website
 ## Project Setup
 
 ```sh
