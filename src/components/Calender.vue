@@ -6,13 +6,13 @@
             class="date"
         >
         <div class="single-date" v-if="!calVal.isPadding">
-            <div class="date-info"  >
-                <div class="dateNum">{{calVal.date + 1}}</div>
-                <div v-if="filmExist(calVal.date)">{{listToDisplay.get(calVal.date)}}</div>
-            </div>
-            <div v-for="[username, filmList] in userFilmList.entries()">
-                <div :class="filmList.get(listToDisplay.get(calVal.date) ?? '')?.toLowerCase()">{{username}}</div>
-            </div>
+            <div  class="dateNum"><span :class="isToday(calVal.date) ? 'today': ''">{{calVal.date + 1}}</span></div>
+            <div class="date-info" v-if="filmExist(calVal.date)">{{listToDisplay.get(calVal.date)}}</div>
+            <template v-for="[username, filmList] in userFilmList.entries()">
+                <div class="userStatus">
+                    <div :class="filmList.get(listToDisplay.get(calVal.date) ?? '')?.toLowerCase()">{{username}}</div>
+                </div>
+            </template>
         </div>
 
         </div>
@@ -25,7 +25,6 @@
     import {computed} from 'vue'
     import type { ListFilm, WatchStatus } from '@/types';
     import { getDaysInMonth, firstDayInMonthIndex } from '@/utils'
-
     type CalenderItem = {
         isPadding: boolean
         date: number
@@ -44,14 +43,17 @@
         return props.listToDisplay.has(date)
     }
 
-    const statusClass = (status: WatchStatus) => {
-        
+    const isToday = (day: number) => {
+        return new Date().getDate() == day + 1
+
     }
+
 
     const numberOfDays = getDaysInMonth(props.year, props.month)
     const firstDay = firstDayInMonthIndex(props.year, props.month)
     console.log(numberOfDays)
     console.log(firstDay)
+    console.log(props.userFilmList)
 
     const monthName = new Date(props.year,props.month,0).toLocaleDateString('en-US',{month: 'long'})
 
@@ -69,37 +71,74 @@
 <style scoped>
 
     h2 {
-        color: white 
+        color: var(--off-white);
+        text-align: center
     }
     #calender {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         justify-content: stretch;
-        gap: .3em;
     }
     .single-date {
         margin: .3em;
     }
     .date-info {
-        display: flex;
-        gap: .4em;
+        text-align: center;
+        font-size: .8em;
+        margin-top: 5px;
+    }
+
+    .dateNum {
+        text-align: center;
+    }
+
+    span {
+        line-height: 24px;
+        display: inline-block;
+    }
+    .today {
+        height: 24px;
+        color: #fff;
+        background-color: #40bcf4;
+        border-radius: 50%;
+        min-width: 24px;
+        font-weight: 500;
+        text-align: center;
+        white-space: nowrap;
+        width: max-content;
     }
 
     .date {
         width: 100%;
-        height: 8em;
+        min-height: 8em;
         border: 2px solid white;
         color: white;
         /* padding: .3em; */
     }
 
     .not {
-        color: red
+        color: var(--off-white);
+        background-color: #bb0200;
+        padding: 5px 7px;
+        border-radius: 5px;
     }
     .ontime {
-        color: green
+        color: var(--off-white);
+        background-color: #00af21;
+        padding: 5px 7px;
+        border-radius: 5px;
     }
     .late {
-        color: yellow
+        color: var(--off-white);
+        background-color: #ff8001;
+        padding: 5px 7px;
+        border-radius: 5px;
     }
+
+    .userStatus {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 5px 0;
+    } 
 </style>

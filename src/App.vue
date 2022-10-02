@@ -11,7 +11,7 @@
   import Calender from './components/Calender.vue';
   import Controls from './components/Controls.vue';
   import { useControlsStore } from './stores/controls';
-import { getDaysInMonth } from '@/utils';
+  import { getDaysInMonth } from '@/utils';
   const controls = useControlsStore()
   const usersFilmWatch = ref<Map<string,Map<string,WatchStatus>>>(new Map())
   const filmList = ref<Map<number,string>>(new Map())
@@ -21,13 +21,13 @@ import { getDaysInMonth } from '@/utils';
 
 
   controls.$subscribe((mutation, state) => {
-    console.log(controls.userNameList)
     getFilmListAndWatchStatus(controls.userNameList, state.listName)
+    window.history.replaceState(null, "", `?u=${controls.userNameList.join("&u=")}&list=${state.listName}`);
   })
 
   const getList = async (listName: string) => {
     const filmList = await (
-      await fetch(`/api/list?list=${listName}`)
+      await fetch(`https://shocktober-tracker-goodbyte.vercel.app/api/list?list=${listName}`)
     ).json()
 
     return filmList as ListFilm[]
@@ -36,7 +36,7 @@ import { getDaysInMonth } from '@/utils';
   const getUserWatchStatus = async (userNames: string[]) => {
     const userNameUrl = `user=${userNames.join("&user=")}`
     const filmsWatchedForUsers = await (
-        await fetch(`/api?${userNameUrl}&year=${year.value}&month=${month.value}`)
+        await fetch(`https://shocktober-tracker-goodbyte.vercel.app/api?${userNameUrl}&year=${year.value}&month=${month.value}`)
       ).json()
     return filmsWatchedForUsers as UserFilmWatch
   }
@@ -91,8 +91,12 @@ import { getDaysInMonth } from '@/utils';
 
 
 <style>
+  :root {
+    --off-white: #ebebeb;
+    --dark: #1b2127;
+  }
   html {
-    background-color: #1b2127;
+    background-color: var(--dark);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
   }
 

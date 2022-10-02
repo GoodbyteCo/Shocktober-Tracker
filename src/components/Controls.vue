@@ -33,18 +33,26 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue'
+    import { onMounted, ref } from 'vue'
     import { useControlsStore } from '@/stores/controls';
     
-    const userName = ref("")
-    const listName = ref("")
-    
-    const controls = useControlsStore()
+    // const userName = ref("")
+    // const listName = ref("")
 
+    const urlParams = new URLSearchParams(window.location.search)
+    const userNamesFromUrl = urlParams.getAll('u') ?? []
+    const listFromUrl = urlParams.get('list') ?? ''
+    const userName = ref(userNamesFromUrl.join(','))  
+    const listName = ref(listFromUrl)
+
+    const controls = useControlsStore()
+    if (userName.value !== '' && listName.value !== '') {
+        controls.$patch({
+            userNames: userName.value,
+            listName: listName.value
+        })
+    }
     const update = () => {
-        console.log("hello")
-        console.log(listName.value)
-        console.log(userName.value)
         controls.$patch({
             userNames: userName.value,
             listName: listName.value
@@ -56,14 +64,14 @@
 
 
     fieldset {
-        color: #ebebeb
+        color: var(--off-white)
     }
     input {
         font-size: 1.1rem;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         line-height: 2.8rem;
-        background: #ebebeb;
+        background: var(--off-white);
         padding: 0 1rem;
         min-width: 200px;
         border: 0;
@@ -71,7 +79,7 @@
         outline: none;
     }
     label {
-        color: #ebebeb
+        color: var(--off-white)
     }
 
     fieldset div{
@@ -83,7 +91,9 @@
     }
 
     button {
-        color: #fff;
+        display: flex;
+        
+        background-color: var(--off-white);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         font-size: .8rem;
@@ -91,7 +101,6 @@
         text-transform: uppercase;
         letter-spacing: .04em;
         line-height: 2.8rem;
-        display: inline-block;
         cursor: pointer;
         padding: 0 1rem;
         border: 0;
@@ -100,5 +109,12 @@
         color: #1b2127;
         text-align: center;
         margin: auto;
+        margin-top: 10px;
+        transition: background-color .2s ease-in-out;
+    }
+
+    button:hover,button:focus,button:focus-visible {
+        background-color: #42bcf4
+
     }
 </style>
