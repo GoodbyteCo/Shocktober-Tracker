@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-	import {computed} from 'vue'
 	import type { Film, WatchStatus } from '@/types';
 	import { getDaysInMonth, firstDayInMonthIndex } from '@/utils'
 	
@@ -64,9 +63,6 @@
 
 	const numberOfDays = getDaysInMonth(props.year, props.month)
 	const firstDay = firstDayInMonthIndex(props.year, props.month)
-	console.log(numberOfDays)
-	console.log(firstDay)
-	console.log(props.userFilmList)
 
 	const monthName = new Date(props.year,props.month,0).toLocaleDateString('en-US',{month: 'long'})
 
@@ -79,7 +75,6 @@
 	})
 	
 	const calender = [...paddingCalenderItems, ...calenderDays]
-	console.log(calender)
 </script>
 
 <style scoped>

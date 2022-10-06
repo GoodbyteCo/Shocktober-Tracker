@@ -1,5 +1,5 @@
 <template>
-     <form @submit.prevent>
+		<form @submit.prevent>
 		<fieldset>
 			<legend>Shocktober</legend>
 
@@ -9,36 +9,32 @@
 					id="username" 
 					name="u"
 					placeholder="ex: holopollock"
-                    @change="userName = ($event.target as HTMLInputElement).value"
+					@change="userName = ($event.target as HTMLInputElement).value"
 					:value="userName"
 					required
 				>
 			</div>
 
-            <div class="listName">
+			<div class="listName">
 				<label for="listName">List</label>
 				<input type="text"
 					id="list" 
 					name="ln"
 					placeholder="holopollock/list/full-shocktober-2022"
-                    @change="listName = ($event.target as HTMLInputElement).value"
+					@change="listName = ($event.target as HTMLInputElement).value"
 					:value="listName"
 					required
 				>
 			</div>
 
 		</fieldset>
-        <button v-on:click="update()">Submit</button>
+		<button v-on:click="update()">Submit</button>
 	</form>
 </template>
 
 <script setup lang="ts">
-    import { onMounted, ref } from 'vue'
-    import { useControlsStore } from '@/stores/controls';
-
-    
-    // const userName = ref("")
-    // const listName = ref("")
+    import { ref } from 'vue'
+    import { useControlsStore } from '@/stores/controls'
 
     const urlParams = new URLSearchParams(window.location.search)
     const userNamesFromUrl = urlParams.getAll('u') ?? []
@@ -62,11 +58,10 @@
 </script>
 
 <style scoped>
-
-
     fieldset {
         color: var(--off-white)
     }
+
     input {
         font-size: 1.1rem;
         -webkit-font-smoothing: antialiased;
@@ -79,11 +74,12 @@
         border-radius: 4px;
         outline: none;
     }
+
     label {
         color: var(--off-white)
     }
 
-    fieldset div{
+    fieldset div {
         margin: 1rem 0;
         display: flex;
         align-items: center;
