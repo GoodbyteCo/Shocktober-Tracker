@@ -30,7 +30,6 @@
     import { useControlsStore } from '@/stores/controls'
 	import { useShocktoberUrlParams } from '@/utils/useShocktoberUrlParam';
 
-    const urlParams = new URLSearchParams(window.location.search)
 	const {list, userName: userNamesFromUrl} = useShocktoberUrlParams()
     const userName = ref(userNamesFromUrl.join(','))  
     const listName = ref(list)
