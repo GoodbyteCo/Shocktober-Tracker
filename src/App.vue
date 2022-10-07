@@ -103,13 +103,71 @@
 </script>
 
 <style>
-	:root {
-		--off-white: #ebebeb;
-		--dark: #1b2127;
+	:root
+	{
+		--white: #feeedf;
+		--black: #000000;
+		--red: #c30000;
+
+		--title-font: 'Roslindale Condensed', serif;
+		--body-font: 'Roslindale Text', serif;
+		--numbers-font: 'Zangezi', serif;
 	}
 
-	html {
-		background-color: var(--dark);
-		font-family: serif;
+	html
+	{
+		background-color: var(--red);
+	}
+
+	body
+	{
+		color: var(--white);
+		font-family: var(--body-font);
+		margin: 0;
+
+		min-height: 100vh;
+		box-sizing: border-box;
+
+		background-image:
+			url('/grain.jpg'),
+			linear-gradient(to bottom, var(--black), #661D1F);
+
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-blend-mode: luminosity;
+	}
+
+	h1
+	{
+		font-family: var(--title-font);
+		text-transform: uppercase;
+		font-weight: normal;
+		font-size: 5.25rem;
+		line-height: 2;
+
+		text-align: center;
+		margin: 0;
+	}
+
+	@font-face
+	{
+		src: url('https://fonts.goodbyte.ca/roslindale-condensed-subset-uppercase.woff2') format("woff2"),
+			url('https://fonts.goodbyte.ca/roslindale-condensed-subset-uppercase.woff') format("woff");
+		font-family: 'Roslindale Condensed';
+	}
+
+	@font-face
+	{
+		src: url('https://fonts.goodbyte.ca/roslindale-text-subset.woff2') format("woff2"),
+			url('https://fonts.goodbyte.ca/roslindale-text-subset.woff') format("woff");
+		font-family: 'Roslindale Text';
+		unicode-range: U+0020-007F, U+00A9;
+	}
+
+	@font-face
+	{
+		src: url('https://fonts.goodbyte.ca/zangezi-subset-digits.woff2') format("woff2"),
+			url('https://fonts.goodbyte.ca/zangezi-subset-digits.woff') format("woff");
+		font-family: 'Zangezi';
 	}
 </style>

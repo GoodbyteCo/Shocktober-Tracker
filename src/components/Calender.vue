@@ -1,36 +1,28 @@
 <template>
-	<h2>
-		{{ `Shock${monthName.slice(2)}` }}
-	</h2>
 	<section id="calender">
-		<div
+		<a
 			v-for="calVal in calender"
 			:key="calVal.date"
-			:class="calVal.isPadding ? 'isCalPadding date': 'date'"
+			:class="{
+				'today': isToday(calVal.date),
+				'padding': calVal.isPadding,
+				'date': true,
+			}"
+			:title="listToDisplay.get(calVal.date)!.name"
+			:href="(filmExist(calVal.date)) ?
+				`https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}` : ''"
+			target="_blank"
 		>
-			<div v-if="!calVal.isPadding" class="single-date">
-				<div class="dateNum">
-					<span :class="{ 'today': isToday(calVal.date) }">
-						{{ calVal.date + 1 }}
-					</span>
-				</div>
-				<a
-					v-if="filmExist(calVal.date)"
-					:href="`https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}`"
-					target="_blank"
-					class="date-info"
-				>
-					{{listToDisplay.get(calVal.date)!.name}}
-				</a>
-				<template v-for="[username, filmList] in userFilmList.entries()">
-					<div class="userStatus">
-						<div :class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase()">
-							{{username}}
-						</div>
-					</div>
-				</template>
-			</div>
-		</div>
+			<h3>
+				{{ calVal.date + 1 }}
+			</h3>
+			<p
+				v-for="[username, filmList] in userFilmList.entries()"
+				:class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase() + ' user'"
+			>
+				{{ username }}
+			</p>
+		</a>
 	</section>
 </template>
 
@@ -64,8 +56,6 @@
 	const numberOfDays = getDaysInMonth(props.year, props.month)
 	const firstDay = firstDayInMonthIndex(props.year, props.month)
 
-	const monthName = new Date(props.year,props.month,0).toLocaleDateString('en-US',{month: 'long'})
-
 	const paddingCalenderItems = Array(firstDay).fill("").map<CalenderItem>((_val, index) => {
 		return {isPadding: true, date: index - firstDay}
 	})
@@ -78,90 +68,104 @@
 </script>
 
 <style scoped>
-	h2 {
-		color: var(--off-white);
-		text-align: center
-	}
-	
 	#calender {
 		display: grid;
 		grid-template-columns: repeat(7, 1fr);
-		justify-content: stretch;
-	}
-	
-	.single-date {
-		margin: .3em;
-	}
-	
-	.date-info {
-		text-align: center;
-		font-size: .8em;
-		margin-top: 5px;
-		color: var(--off-white);
-		display: block;
-		text-decoration: none;
+		gap: 4px;
+		
+		max-width: 1400px;
+		margin: auto;
+		padding: 10px;
+		padding-bottom: 80px;
 	}
 
-	.date-info:hover,.date-info:focus {
-		text-decoration: underline;
-		color:#40bcf4
-	}
-
-	.dateNum {
-		text-align: center;
-	}
-
-	span {
-		line-height: 24px;
-		display: inline-block;
-	}
-	
-	.today {
-		height: 24px;
-		color: #fff;
-		background-color: #40bcf4;
-		border-radius: 50%;
-		min-width: 24px;
-		font-weight: 500;
-		text-align: center;
-		white-space: nowrap;
-		width: max-content;
-	}
-
-	.date {
-		width: 100%;
-		min-height: 8em;
-		border: 2px solid white;
-		color: white;
-	}
-
-	.isCalPadding {
-		border: none;
-	}
-
-	.not {
-		color: var(--off-white);
-		background-color: #bb0200;
-		padding: 5px 7px;
-		border-radius: 5px;
-	}
-	.ontime {
-		color: var(--off-white);
-		background-color: #00af21;
-		padding: 5px 7px;
-		border-radius: 5px;
-	}
-	.late {
-		color: var(--off-white);
-		background-color: #ff8001;
-		padding: 5px 7px;
-		border-radius: 5px;
-	}
-
-	.userStatus {
+	a.date
+	{
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin: 5px 0;
-	} 
+		flex-direction: column;
+		aspect-ratio: 1 / 1;
+		overflow: hidden;
+
+		text-decoration: none;
+		color: var(--black);
+		background: var(--white);
+
+		transition: background-color 1.6s ease-in;
+	}
+
+	a.date.padding
+	{
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	a.date:hover
+	{
+		background-color: var(--red);
+		transition: background-color 0.3s ease;
+	}
+	
+	h3
+	{
+		font-family: var(--numbers-font);
+		font-size: 2.5rem;
+		font-weight: normal;
+
+		padding: 0.22em 0.11em 0;
+		margin: 0;
+		margin-bottom: auto;
+		border-radius: 100%;
+
+		line-height: 2ch;
+		width: 2ch;
+		text-align: center;
+
+		transform: translate(-5px, -5px);
+	}
+
+	.today h3
+	{
+		background: var(--red);
+	}
+
+	p.user
+	{
+		font-family: var(--body-font);
+		color: var(--black);
+		margin: 0.25em 1ch;
+		line-height: 0.9;
+
+		border-radius: 2px;
+		border-top-left-radius: 1em;
+		border-bottom-right-radius: 1rem;
+
+		max-width: max-content;
+	}
+
+	p.user:last-child
+	{
+		margin-bottom: 0.8em;
+	}
+
+	p.user.ontime
+	{
+		background-image: linear-gradient(90deg,
+			hsl(0, 100%, 38%, 0),
+			hsl(0, 100%, 38%, 1) 10%,
+			hsl(0, 100%, 38%, 0.8) 53%,
+			hsl(0, 100%, 38%, 1) 83%,
+			hsl(0, 100%, 38%, 0.5));
+	}
+
+	p.user.late
+	{
+		background-image: linear-gradient(90deg, 
+			hsl(0, 100%, 38%, 0),
+			hsl(0, 100%, 38%, 1) 10%,
+			hsl(0, 100%, 38%, 0) 30%,
+			hsl(0, 100%, 38%, 1) 50%,
+			hsl(0, 100%, 38%, 0) 70%,
+			hsl(0, 100%, 38%, 1) 90%,
+			hsl(0, 100%, 38%, 0.5));
+	}
 </style>
