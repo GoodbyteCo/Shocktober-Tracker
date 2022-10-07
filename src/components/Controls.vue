@@ -1,33 +1,26 @@
 <template>
-		<form @submit.prevent>
-		<fieldset>
-			<legend>Shocktober</legend>
-
-			<div class="username">
-				<label for="username">Letterboxd username</label>
-				<input type="text"
-					id="username" 
-					name="u"
-					placeholder="ex: holopollock"
-					@change="userName = ($event.target as HTMLInputElement).value"
-					:value="userName"
-					required
-				>
-			</div>
-
-			<div class="listName">
-				<label for="listName">List</label>
-				<input type="text"
-					id="list" 
-					name="ln"
-					placeholder="holopollock/list/full-shocktober-2022"
-					@change="listName = ($event.target as HTMLInputElement).value"
-					:value="listName"
-					required
-				>
-			</div>
-
-		</fieldset>
+	<form @submit.prevent>
+		<div class="username">
+			<label for="username">usernames</label>
+			<input type="text"
+				id="username" 
+				name="u"
+				@change="userName = ($event.target as HTMLInputElement).value"
+				:value="userName"
+				required
+			>
+		</div>
+		<div class="listName">
+			<label for="listName">list</label>
+			<input type="text"
+				id="list" 
+				name="ln"
+				placeholder="holopollock/list/full-shocktober-2022"
+				@change="listName = ($event.target as HTMLInputElement).value"
+				:value="listName"
+				required
+			>
+		</div>
 		<button v-on:click="update()">Submit</button>
 	</form>
 </template>
@@ -58,60 +51,55 @@
 </script>
 
 <style scoped>
-    fieldset {
-        color: var(--off-white)
-    }
+	form
+	{
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: flex-end;
+		gap: 10px;
 
-    input {
-        font-size: 1.1rem;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        line-height: 2.8rem;
-        background: var(--off-white);
-        padding: 0 1rem;
-        min-width: 200px;
-        border: 0;
-        border-radius: 4px;
-        outline: none;
-    }
+		margin-bottom: 40px;
+	}
 
-    label {
-        color: var(--off-white)
-    }
+	div
+	{
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
 
-    fieldset div {
-        margin: 1rem 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: .3em
-    }
+	label
+	{
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
+		padding: 4px;
+	}
 
-    button {
-        display: flex;
-        
-        background-color: var(--off-white);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        font-size: .8rem;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: .04em;
-        line-height: 2.8rem;
-        cursor: pointer;
-        padding: 0 1rem;
-        border: 0;
-        border-radius: 4px;
-        outline: none;
-        color: #1b2127;
-        text-align: center;
-        margin: auto;
-        margin-top: 10px;
-        transition: background-color .2s ease-in-out;
-    }
+	input, button
+	{
+		font-family: var(--body-text);
+		font-size: 1rem;
+		color: var(--white);
+		background: transparent;
+		border: 2px solid var(--white);
+		padding: 0 0.5ch;
+		line-height: 2;
+		outline: none;
+	}
 
-    button:hover,button:focus,button:focus-visible {
-        background-color: #42bcf4
-
-    }
+	button
+	{
+		background: var(--white);
+		color: var(--black);
+		cursor: pointer;
+		transition: all 0.3s ease;
+	}
+	
+	button:hover,
+	button:focus
+	{
+		background: var(--red);
+		border-color: var(--red);
+	}
 </style>

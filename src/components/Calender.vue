@@ -8,9 +8,8 @@
 				'padding': calVal.isPadding,
 				'date': true,
 			}"
-			:title="listToDisplay.get(calVal.date)!.name"
-			:href="(filmExist(calVal.date)) ?
-				`https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}` : ''"
+			:title="(filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : ''"
+			:href="(filmExist(calVal.date)) ? `https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}` : ''"
 			target="_blank"
 		>
 			<h3>
@@ -99,7 +98,8 @@
 		pointer-events: none;
 	}
 
-	a.date:hover
+	a.date:hover,
+	a.date:focus
 	{
 		background-color: var(--red);
 		transition: background-color 0.3s ease;

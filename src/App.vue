@@ -114,6 +114,11 @@
 		--numbers-font: 'Zangezi', serif;
 	}
 
+	::selection
+	{
+		background: var(--red);
+	}
+
 	html
 	{
 		background-color: var(--red);
