@@ -137,8 +137,8 @@
 			url('/grain.jpg'),
 			linear-gradient(to bottom, var(--black), #661D1F);
 
-		background-size: cover;
-		background-repeat: no-repeat;
+		background-size: contain;
+		background-repeat: repeat;
 		background-blend-mode: luminosity;
 	}
 
