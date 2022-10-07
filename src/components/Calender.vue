@@ -12,7 +12,7 @@
 			:href="(filmExist(calVal.date)) ? `https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}` : ''"
 			target="_blank"
 		>
-			<template v-if="calVal.isPadding">
+			<template v-if="!calVal.isPadding">
 				<h3>
 					{{ calVal.date + 1 }}
 				</h3>
