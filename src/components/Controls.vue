@@ -102,4 +102,24 @@
 		background: var(--red);
 		border-color: var(--red);
 	}
+
+	@media (max-width: 830px)
+	{
+		form
+		{
+			flex-direction: column;
+			align-items: flex-start;
+
+			max-width: 400px;
+			margin: 0 auto 40px;
+			padding: 10px;
+		}
+
+		input, button, div
+		{
+			display: block;
+			width: 100%;
+			box-sizing: border-box;
+		}
+	}
 </style>

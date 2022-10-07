@@ -154,6 +154,14 @@
 		margin: 0;
 	}
 
+	@media (max-width: 830px)
+	{
+		h1
+		{
+			font-size: 3rem;
+		}
+	}
+
 	@font-face
 	{
 		src: url('https://fonts.goodbyte.ca/roslindale-condensed-subset-uppercase.woff2') format("woff2"),

@@ -67,7 +67,8 @@
 </script>
 
 <style scoped>
-	#calender {
+	#calender
+	{
 		display: grid;
 		grid-template-columns: repeat(7, 1fr);
 		gap: 4px;
@@ -167,5 +168,25 @@
 			hsl(0, 100%, 38%, 0) 70%,
 			hsl(0, 100%, 38%, 1) 90%,
 			hsl(0, 100%, 38%, 0.5));
+	}
+
+	@media (max-width: 830px)
+	{
+		#calender
+		{
+			gap: 3px;
+		}
+
+		h3
+		{
+			font-size: 1.3rem;
+			transform: translate(-3px, -3px);
+		}
+
+		p.user
+		{
+			font-size: 0.8rem;
+			letter-spacing: 0.05em;
+		}
 	}
 </style>
