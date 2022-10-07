@@ -1,7 +1,8 @@
 <template>
 	<section v-if="listToDisplay != undefined && listToDisplay.size > 0" id="calender">
-		<a
+		<component 
 			v-for="calVal in calender"
+			:is="calVal.isPadding ? 'div' : 'a'" 
 			:key="calVal.date"
 			:class="{
 				'today': isToday(calVal.date),
@@ -24,7 +25,7 @@
 					{{ username }}
 				</p>
 				</template>
-		</a>
+		</component>
 	</section>
 </template>
 
