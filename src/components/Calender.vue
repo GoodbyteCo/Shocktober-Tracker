@@ -17,7 +17,7 @@
 			</h3>
 			<p
 				v-for="[username, filmList] in userFilmList.entries()"
-				:class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase() ?? '' + ' user'"
+				:class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase() + ' user'"
 			>
 				{{ username }}
 			</p>
