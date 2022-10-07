@@ -12,16 +12,18 @@
 			:href="(filmExist(calVal.date)) ? `https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}` : ''"
 			target="_blank"
 		>
-			<h3>
-				{{ calVal.date + 1 }}
-			</h3>
-			<p
-				v-for="[username, filmList] in userFilmList.entries()"
-				:class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase() ?? ''"
-				class="user"
-			>
-				{{ username }}
-			</p>
+			<template v-if="calVal.isPadding">
+				<h3>
+					{{ calVal.date + 1 }}
+				</h3>
+				<p
+					v-for="[username, filmList] in userFilmList.entries()"
+					:class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase() ?? ''"
+					class="user"
+				>
+					{{ username }}
+				</p>
+				</template>
 		</a>
 	</section>
 </template>
