@@ -88,6 +88,12 @@
 		outline: none;
 	}
 
+	input:focus,
+	input:focus-within
+	{
+		border-color: var(--red);
+	}
+
 	button
 	{
 		background: var(--white);
