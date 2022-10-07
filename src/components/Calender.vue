@@ -1,5 +1,5 @@
 <template>
-	<section id="calender">
+	<section v-if="listToDisplay != undefined && listToDisplay.size > 0" id="calender">
 		<a
 			v-for="calVal in calender"
 			:key="calVal.date"
@@ -37,8 +37,8 @@
 	type CalenderProps = {
 		year: number,
 		month: number
-		listToDisplay: Map<number,Film>
-		userFilmList: Map<string,Map<string,WatchStatus>>
+		listToDisplay: Map<number, Film>
+		userFilmList: Map<string, Map<string, WatchStatus>>
 	}
 
 	const props = defineProps<CalenderProps>()

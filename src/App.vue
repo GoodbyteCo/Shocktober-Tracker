@@ -154,6 +154,12 @@
 		margin: 0;
 	}
 
+	.loading-indicator
+	{
+		text-align: center;
+		padding: 40px;
+	}
+
 	@media (max-width: 830px)
 	{
 		h1
