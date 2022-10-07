@@ -28,12 +28,12 @@
 <script setup lang="ts">
     import { ref } from 'vue'
     import { useControlsStore } from '@/stores/controls'
+	import { useShocktoberUrlParams } from '@/utils/useShocktoberUrlParam';
 
     const urlParams = new URLSearchParams(window.location.search)
-    const userNamesFromUrl = urlParams.getAll('u') ?? []
-    const listFromUrl = urlParams.get('list') ?? ''
+	const {list, userName: userNamesFromUrl} = useShocktoberUrlParams()
     const userName = ref(userNamesFromUrl.join(','))  
-    const listName = ref(listFromUrl)
+    const listName = ref(list)
 
     const controls = useControlsStore()
     if (userName.value !== '' && listName.value !== '') {

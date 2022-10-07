@@ -24,12 +24,14 @@
 	import Controls from './components/Controls.vue'
 	import { useControlsStore } from './stores/controls'
 	import { getDaysInMonth, getMonthSuffix } from '@/utils'
+  import { useShocktoberUrlParams } from './utils/useShocktoberUrlParam'
 
 	const controls = useControlsStore()
 	const usersFilmWatch = ref<Map<string, Map<string, WatchStatus>>>(new Map())
 	const filmList = ref<Map<number, Film>>(new Map())
 	const year = ref(new Date().getFullYear())
-	const month = ref(10)
+  const {month: monthFromUrl} = useShocktoberUrlParams()
+	const month = ref(monthFromUrl)
 	const loading = ref<boolean | undefined>(undefined)
 	const numberOfDays = getDaysInMonth(year.value, month.value)
 
