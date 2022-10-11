@@ -29,6 +29,7 @@
 </template>
 
 <script setup lang="ts">
+	import { useControlsStore } from '@/stores/controls';
 	import type { Film, ListFilm, UserFilmWatch, WatchStatus } from '@/types';
 	import { getDaysInMonth, firstDayInMonthIndex } from '@/utils'
 	import { ref } from 'vue';
@@ -41,14 +42,14 @@
 	type CalenderProps = {
 		year: number,
 		month: number,
-		listName: string,
-		userNames: string[]
 	}
 
 	const props = defineProps<CalenderProps>()
 
 	const numberOfDays = getDaysInMonth(props.year, props.month)
 	const firstDay = firstDayInMonthIndex(props.year, props.month)
+
+	const controls = useControlsStore()
 
 	const listToDisplay = ref<Map<number, Film> | undefined>(undefined)
 	const userFilmList = ref<Map<string, Map<string, WatchStatus>>>(new Map())
@@ -68,8 +69,8 @@
 		return filmsWatchedForUsers as UserFilmWatch
 	}
 
-	const listOfShocktoberFilms = await getList(props.listName)
-	const userFilmsWatched = await getUserWatchStatus(props.userNames)
+	const listOfShocktoberFilms = await getList(controls.listName)
+	const userFilmsWatched = await getUserWatchStatus(controls.userNameList)
 	const numberOfDayPerFilm = Math.floor(numberOfDays / listOfShocktoberFilms.length)
 		
 	const filmsToWatch = listOfShocktoberFilms.reduce<Set<string>>((set, currentFilm) => {
@@ -86,7 +87,7 @@
 	}, new Map())
 	listToDisplay.value = mapOfWhenShouldWatch
 
-	const userWatchStatus = props.userNames.reduce<Map<string, Map<string, WatchStatus>>>((userMap, userName) => {
+	const userWatchStatus = controls.userNameList.reduce<Map<string, Map<string, WatchStatus>>>((userMap, userName) => {
 		const watchMatch = listOfShocktoberFilms.reduce<Map<string, WatchStatus>>((filmMap, film) => {
 			filmMap.set(film.film_name, 'Not')
 			return filmMap
@@ -95,7 +96,7 @@
 		return userMap
 	}, new Map())
 
-	props.userNames.forEach(userName => {
+	controls.userNameList.forEach(userName => {
 		(userFilmsWatched[userName] ?? []).forEach((filmWatch) => {
 			const filmShouldWatch = mapOfWhenShouldWatch.get(Number(filmWatch.day) - 1)?.name
 			if(filmShouldWatch === filmWatch.filmName) {

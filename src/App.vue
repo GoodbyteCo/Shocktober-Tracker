@@ -1,16 +1,14 @@
 
 <template>
 	<h1>{{ 'Shock' + monthSuffix }}</h1>
-	<controls/>
+	<controls-component/>
 	<suspense>
 		<calender
 			:month="month"
 			:year="year"
-			:listName="listName"
-			:user-names="userNameList"
 		/>
 		<template #fallback>
-		<div class="loading-indicator" v-if="listName != '' && userNameList.length != 0 ">
+		<div class="loading-indicator" v-if="controls.listName != '' && controls.userNameList.length != 0 ">
 			Loading...
 		</div>
 		</template>
@@ -20,7 +18,7 @@
 <script setup lang="ts">
 	import { ref } from 'vue'
 	import Calender from './components/Calender.vue'
-	import Controls from './components/Controls.vue'
+	import ControlsComponent from './components/Controls.vue'
 	import { useControlsStore } from './stores/controls'
 	import { getMonthSuffix } from '@/utils'
   	import { useShocktoberUrlParams } from './utils/useShocktoberUrlParam'
@@ -29,15 +27,11 @@
 	const year = ref(new Date().getFullYear())
   	const { month: monthFromUrl } = useShocktoberUrlParams()
 	const month = ref(monthFromUrl)
-	const listName = ref<string>("")
-	const userNameList = ref<string[]>([])
 
 	const monthSuffix = getMonthSuffix(month.value)
 
 	controls.$subscribe((_mutation, state) => {
 		window.history.replaceState(null, "", `?u=${controls.userNameList.join("&u=")}&list=${state.listName}`);
-		listName.value = state.listName
-		userNameList.value = controls.userNameList
 	})
 
 </script>
