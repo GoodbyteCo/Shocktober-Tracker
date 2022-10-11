@@ -29,8 +29,9 @@
 </template>
 
 <script setup lang="ts">
-	import type { Film, WatchStatus } from '@/types';
+	import type { Film, ListFilm, UserFilmWatch, WatchStatus } from '@/types';
 	import { getDaysInMonth, firstDayInMonthIndex } from '@/utils'
+	import { ref } from 'vue';
 	
 	type CalenderItem = {
 		isPadding: boolean
@@ -39,24 +40,82 @@
 
 	type CalenderProps = {
 		year: number,
-		month: number
-		listToDisplay: Map<number, Film>
-		userFilmList: Map<string, Map<string, WatchStatus>>
+		month: number,
+		listName: string,
+		userNames: string[]
 	}
 
 	const props = defineProps<CalenderProps>()
 
+	const numberOfDays = getDaysInMonth(props.year, props.month)
+	const firstDay = firstDayInMonthIndex(props.year, props.month)
+
+	const listToDisplay = ref<Map<number, Film> | undefined>(undefined)
+	const userFilmList = ref<Map<string, Map<string, WatchStatus>>>(new Map())
+	const getList = async (listName: string) => {
+		const filmList = await (
+			await fetch(`/api/list?list=${listName}`)
+		).json()
+
+		return filmList as ListFilm[]
+	}
+
+	const getUserWatchStatus = async (userNames: string[]) => {
+		const userNameUrl = `user=${userNames.join("&user=")}`
+		const filmsWatchedForUsers = await (
+			await fetch(`/api?${userNameUrl}&year=${props.year}&month=${props.month}`)
+		).json()
+		return filmsWatchedForUsers as UserFilmWatch
+	}
+
+	const listOfShocktoberFilms = await getList(props.listName)
+	const userFilmsWatched = await getUserWatchStatus(props.userNames)
+	const numberOfDayPerFilm = Math.floor(numberOfDays / listOfShocktoberFilms.length)
+		
+	const filmsToWatch = listOfShocktoberFilms.reduce<Set<string>>((set, currentFilm) => {
+		set.add(currentFilm.film_name)
+		return set
+	}, new Set())
+		
+	const mapOfWhenShouldWatch = listOfShocktoberFilms.reduce<Map<number, Film>>((map, currentFilm, indexList) => {
+		for (let index = 0; index < numberOfDayPerFilm; index++) {
+			map.set(index+indexList*numberOfDayPerFilm, {name: currentFilm.film_name, slug: currentFilm.list_url})
+		}
+
+		return map
+	}, new Map())
+	listToDisplay.value = mapOfWhenShouldWatch
+
+	const userWatchStatus = props.userNames.reduce<Map<string, Map<string, WatchStatus>>>((userMap, userName) => {
+		const watchMatch = listOfShocktoberFilms.reduce<Map<string, WatchStatus>>((filmMap, film) => {
+			filmMap.set(film.film_name, 'Not')
+			return filmMap
+		}, new Map())
+		userMap.set(userName, watchMatch)
+		return userMap
+	}, new Map())
+
+	props.userNames.forEach(userName => {
+		(userFilmsWatched[userName] ?? []).forEach((filmWatch) => {
+			const filmShouldWatch = mapOfWhenShouldWatch.get(Number(filmWatch.day) - 1)?.name
+			if(filmShouldWatch === filmWatch.filmName) {
+				userWatchStatus.get(userName)!.set(filmWatch.filmName, "OnTime")
+			} else if (filmsToWatch.has(filmWatch.filmName)) {
+				userWatchStatus.get(userName)!.set(filmWatch.filmName, "Late") 
+			}
+		})
+	})
+
+	userFilmList.value = userWatchStatus
+
 	const filmExist = (date: number)=> {
-		return props.listToDisplay.has(date)
+		return listToDisplay.value?.has(date)
 	}
 
 	const isToday = (day: number) => {
 		return new Date().getDate() == day + 1
 
 	}
-
-	const numberOfDays = getDaysInMonth(props.year, props.month)
-	const firstDay = firstDayInMonthIndex(props.year, props.month)
 
 	const paddingCalenderItems = Array(firstDay).fill("").map<CalenderItem>((_val, index) => {
 		return {isPadding: true, date: index - firstDay}
