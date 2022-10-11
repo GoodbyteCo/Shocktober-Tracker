@@ -69,45 +69,53 @@
 		return filmsWatchedForUsers as UserFilmWatch
 	}
 
-	const listOfShocktoberFilms = await getList(controls.listName)
-	const userFilmsWatched = await getUserWatchStatus(controls.userNameList)
-	const numberOfDayPerFilm = Math.floor(numberOfDays / listOfShocktoberFilms.length)
-		
-	const filmsToWatch = listOfShocktoberFilms.reduce<Set<string>>((set, currentFilm) => {
-		set.add(currentFilm.film_name)
-		return set
-	}, new Set())
-		
-	const mapOfWhenShouldWatch = listOfShocktoberFilms.reduce<Map<number, Film>>((map, currentFilm, indexList) => {
-		for (let index = 0; index < numberOfDayPerFilm; index++) {
-			map.set(index+indexList*numberOfDayPerFilm, {name: currentFilm.film_name, slug: currentFilm.list_url})
-		}
+	const runStuff = async (listName: string, userNameList: string[]) => {
+			const listOfShocktoberFilms = await getList(listName)
+			const userFilmsWatched = await getUserWatchStatus(userNameList)
+			const numberOfDayPerFilm = Math.floor(numberOfDays / listOfShocktoberFilms.length)
+				
+			const filmsToWatch = listOfShocktoberFilms.reduce<Set<string>>((set, currentFilm) => {
+				set.add(currentFilm.film_name)
+				return set
+			}, new Set())
+				
+			const mapOfWhenShouldWatch = listOfShocktoberFilms.reduce<Map<number, Film>>((map, currentFilm, indexList) => {
+				for (let index = 0; index < numberOfDayPerFilm; index++) {
+					map.set(index+indexList*numberOfDayPerFilm, {name: currentFilm.film_name, slug: currentFilm.list_url})
+				}
 
-		return map
-	}, new Map())
-	listToDisplay.value = mapOfWhenShouldWatch
+				return map
+			}, new Map())
+			listToDisplay.value = mapOfWhenShouldWatch
 
-	const userWatchStatus = controls.userNameList.reduce<Map<string, Map<string, WatchStatus>>>((userMap, userName) => {
-		const watchMatch = listOfShocktoberFilms.reduce<Map<string, WatchStatus>>((filmMap, film) => {
-			filmMap.set(film.film_name, 'Not')
-			return filmMap
-		}, new Map())
-		userMap.set(userName, watchMatch)
-		return userMap
-	}, new Map())
+			const userWatchStatus = userNameList.reduce<Map<string, Map<string, WatchStatus>>>((userMap, userName) => {
+				const watchMatch = listOfShocktoberFilms.reduce<Map<string, WatchStatus>>((filmMap, film) => {
+					filmMap.set(film.film_name, 'Not')
+					return filmMap
+				}, new Map())
+				userMap.set(userName, watchMatch)
+				return userMap
+			}, new Map())
 
-	controls.userNameList.forEach(userName => {
-		(userFilmsWatched[userName] ?? []).forEach((filmWatch) => {
-			const filmShouldWatch = mapOfWhenShouldWatch.get(Number(filmWatch.day) - 1)?.name
-			if(filmShouldWatch === filmWatch.filmName) {
-				userWatchStatus.get(userName)!.set(filmWatch.filmName, "OnTime")
-			} else if (filmsToWatch.has(filmWatch.filmName)) {
-				userWatchStatus.get(userName)!.set(filmWatch.filmName, "Late") 
-			}
-		})
+			userNameList.forEach(userName => {
+				(userFilmsWatched[userName] ?? []).forEach((filmWatch) => {
+					const filmShouldWatch = mapOfWhenShouldWatch.get(Number(filmWatch.day) - 1)?.name
+					if(filmShouldWatch === filmWatch.filmName) {
+						userWatchStatus.get(userName)!.set(filmWatch.filmName, "OnTime")
+					} else if (filmsToWatch.has(filmWatch.filmName)) {
+						userWatchStatus.get(userName)!.set(filmWatch.filmName, "Late") 
+					}
+				})
+			})
+
+			return userWatchStatus
+	}
+
+	userFilmList.value = await runStuff(controls.listName, controls.userNameList)
+
+	controls.$subscribe(async (_mut, state) => {
+		userFilmList.value = await runStuff(state.listName, controls.userNameList)
 	})
-
-	userFilmList.value = userWatchStatus
 
 	const filmExist = (date: number)=> {
 		return listToDisplay.value?.has(date)
