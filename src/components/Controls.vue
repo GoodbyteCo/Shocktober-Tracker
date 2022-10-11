@@ -42,6 +42,7 @@
         })
     }
     const update = () => {
+		console.log("updating")
         controls.$patch({
             userNames: userName.value,
             listName: listName.value
