@@ -114,6 +114,7 @@
 	userFilmList.value = await runStuff(controls.listName, controls.userNameList)
 
 	controls.$subscribe(async (_mut, state) => {
+		console.log("running Stuff")
 		userFilmList.value = await runStuff(state.listName, controls.userNameList)
 	})
 
