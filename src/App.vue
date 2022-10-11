@@ -6,11 +6,11 @@
 		<calender
 			:month="month"
 			:year="year"
-			:listName="controls.listName"
-			:user-names="controls.userNameList"
+			:listName="listName"
+			:user-names="userNameList"
 		/>
 		<template #fallback>
-		<div class="loading-indicator" v-if="controls.listName && controls.userNames">
+		<div class="loading-indicator" v-if="listName != '' && userNameList.length != 0 ">
 			Loading...
 		</div>
 		</template>
@@ -29,11 +29,15 @@
 	const year = ref(new Date().getFullYear())
   	const { month: monthFromUrl } = useShocktoberUrlParams()
 	const month = ref(monthFromUrl)
+	const listName = ref<string>("")
+	const userNameList = ref<string[]>([])
 
 	const monthSuffix = getMonthSuffix(month.value)
 
 	controls.$subscribe((_mutation, state) => {
 		window.history.replaceState(null, "", `?u=${controls.userNameList.join("&u=")}&list=${state.listName}`);
+		listName.value = state.listName
+		userNameList.value = controls.userNameList
 	})
 
 </script>
