@@ -111,7 +111,9 @@
 			return userWatchStatus
 	}
 
-	userFilmList.value = await runStuff(controls.listName, controls.userNameList)
+	if (controls.listName != "", controls.userNameList.length != 0){ 
+		userFilmList.value = await runStuff(controls.listName, controls.userNameList)
+	}
 
 	controls.$subscribe(async (_mut, state) => {
 		console.log("running Stuff")
