@@ -167,14 +167,14 @@
 		background-image: linear-gradient(90deg, 
 			hsl(0, 100%, 38%, 0),
 			hsl(0, 100%, 38%, 1) 10%,
-			hsl(0, 100%, 38%, 0) 30%,
+			hsl(0, 100%, 38%, 0.4) 30%,
 			hsl(0, 100%, 38%, 1) 50%,
-			hsl(0, 100%, 38%, 0) 70%,
+			hsl(0, 100%, 38%, 0.6) 70%,
 			hsl(0, 100%, 38%, 1) 90%,
 			hsl(0, 100%, 38%, 0.5));
 	}
 
-	@media (max-width: 830px)
+	@media (max-width: 975px)
 	{
 		#calender
 		{
