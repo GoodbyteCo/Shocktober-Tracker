@@ -193,4 +193,24 @@
 			letter-spacing: 0.05em;
 		}
 	}
+	
+	@media (max-width: 640px)
+	{
+		#calender
+		{
+			gap: 2px;
+		}
+
+		p.user
+		{
+			font-size: 0.7rem;
+			letter-spacing: 0em;
+			margin: 0.25em 2px;
+		}
+		
+		a.date
+		{
+			aspect-ratio: auto;
+		}
+	}
 </style>
