@@ -15,7 +15,6 @@
 		>
 			<template v-if="!calVal.isPadding">
 				<h3>
-					{{ calVal.date + 1 }}
 					{{
 						"".concat(String(calVal.date + 1) + " " + listToDisplay.get(calVal.date)!.name : ''
 						
