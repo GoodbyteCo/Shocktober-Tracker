@@ -133,17 +133,21 @@
 		transform: translate(-5px, -5px);
 	}
 
-	.today h3
-	{
-		background: var(--red);
+	h3.number {
+		margin-bottom: auto;
+		border-radius: 100%;
+		line-height: 2ch;
+		width: 2ch;
 	}
 
-	.title {
+	h3.title {
 		font-size: 1.75rem;
 	}
 
-	p.user
-		{
+	.today h3.number {
+		background: var(--red);
+	}
+
 		font-family: var(--body-font);
 		color: var(--black);
 		margin: 0.25em 1ch;
