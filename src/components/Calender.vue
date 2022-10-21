@@ -122,26 +122,27 @@
 		font-size: 2.5rem;
 		font-weight: normal;
 
-		padding: 0.22em 0.11em 0;
+		padding: 0.22em 0.11em 0 0.5em;
 		margin: 0;
 
-		text-align: center;
+		text-align: left;
 
 		transform: translate(-5px, -5px);
 	}
 
-	h3.number {
+	.number {
+		padding-right: 0.3em;
 		margin-bottom: auto;
 		border-radius: 100%;
 		line-height: 2ch;
 		width: 2ch;
 	}
 
-	h3.title {
+	.title {
 		font-size: 1.75rem;
 	}
 
-	.today h3.number {
+	.today .number {
 		background: var(--red);
 	}
 
