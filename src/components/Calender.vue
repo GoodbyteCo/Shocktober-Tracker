@@ -122,13 +122,14 @@
 		font-size: 2.5rem;
 		font-weight: normal;
 
+		margin: 0;
 		margin-bottom: auto;
 		text-align: left;
 	}
 
 	.number {
-		padding: 0.22em 0.11em 0 0.5em;
-		margin: 0;
+		padding: 0.22em 0.11em 0;
+		margin: 0 0 auto;
 
 		border-radius: 100%;
 		line-height: 2ch;
@@ -137,6 +138,7 @@
 
 	.title {
 		font-size: 1.4rem;
+		padding: 0.22em 0 0 0;
 	}
 
 	.today .number {
