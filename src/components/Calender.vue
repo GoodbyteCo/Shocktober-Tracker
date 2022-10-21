@@ -16,7 +16,7 @@
 			<template v-if="!calVal.isPadding">
 				<h3>
 					{{ calVal.date + 1 }}
-					{{ listToDisplay.get(calVal.date)!.name : '' }}
+					{{ (filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : '' }}
 				</h3>
 				<p
 					v-for="[username, filmList] in userFilmList.entries()"
