@@ -15,7 +15,16 @@
 		>
 			<template v-if="!calVal.isPadding">
 				<h3>
-					{{ calVal.date + 1 }}
+					{{
+						"".concat(
+							calVal.date +
+								1 +
+								" " +
+								listToDisplay.get(
+									Math.floor((calVal.date + 1) / 2)
+								)
+						)
+					}}
 				</h3>
 				<p
 					v-for="[username, filmList] in userFilmList.entries()"
