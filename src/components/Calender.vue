@@ -115,35 +115,35 @@
 		transition: background-color 0.3s ease;
 	}
 	
-	h3
-	{
+	h3 {
 		font-family: var(--numbers-font);
 		font-size: 2.5rem;
 		font-weight: normal;
 
 		padding: 0.22em 0.11em 0;
 		margin: 0;
-		margin-bottom: auto;
-		border-radius: 100%;
 
-		line-height: 2ch;
-		width: 2ch;
 		text-align: center;
 
 		transform: translate(-5px, -5px);
 	}
 
-	.today h3
-	{
-		background: var(--red);
+	h3.number {
+		margin-bottom: auto;
+		border-radius: 100%;
+		line-height: 2ch;
+		width: 2ch;
 	}
 
-	.title {
+	h3.title {
 		font-size: 1.75rem;
 	}
 
-	p.user
-		{
+	.today h3.number {
+		background: var(--red);
+	}
+
+	p.user {
 		font-family: var(--body-font);
 		color: var(--black);
 		margin: 0.25em 1ch;
