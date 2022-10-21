@@ -142,6 +142,8 @@
 		font-size: 1.75rem;
 	}
 
+	p.user
+		{
 		font-family: var(--body-font);
 		color: var(--black);
 		margin: 0.25em 1ch;
