@@ -16,12 +16,10 @@
 			<template v-if="!calVal.isPadding">
 				<h3>
 					{{
-						"".concat(
-							String(calVal.date + 1) +
-								" " +
-								listToDisplay.get(
-									Math.floor((calVal.date + 1) / 2)
-								)
+						(filmExist(calVal.date)) ? 
+						"".concat(String(calVal.date + 1) + " " + listToDisplay.get(calVal.date)!.name: ''
+						
+								
 						)
 					}}
 				</h3>
