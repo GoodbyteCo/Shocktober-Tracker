@@ -18,11 +18,10 @@
 		>
 			<template v-if="!calVal.isPadding">
 				<h3>
-					{{ calVal.date + 1 }}
-					<span
-						class="title"
-						>{{ (filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : '' }}</span
-					>
+					<span class="number"> {{ calVal.date + 1 }} </span>
+					<span class="title">
+						{{ (filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : '' }}
+					</span>
 				</h3>
 
 				<p
