@@ -16,8 +16,12 @@
 			<template v-if="!calVal.isPadding">
 				<h3>
 					{{ calVal.date + 1 }}
-					{{ (filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : '' }}
+					<span
+						class="title"
+						>{{ (filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : '' }}</span
+					>
 				</h3>
+
 				<p
 					v-for="[username, filmList] in userFilmList.entries()"
 					:class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase() ?? ''"
@@ -134,8 +138,10 @@
 		background: var(--red);
 	}
 
-	p.user
-	{
+	.title {
+		font-size: 1.75rem;
+	}
+
 		font-family: var(--body-font);
 		color: var(--black);
 		margin: 0.25em 1ch;
