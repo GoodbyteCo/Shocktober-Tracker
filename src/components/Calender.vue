@@ -17,8 +17,7 @@
 				<h3>
 					{{ calVal.date + 1 }}
 					{{
-						(filmExist(calVal.date)) ? 
-						" ".concat(listToDisplay.get(calVal.date)!.name : ''
+						"".concat(String(calVal.date + 1) + " " + listToDisplay.get(calVal.date)!.name : ''
 						
 								
 						)
