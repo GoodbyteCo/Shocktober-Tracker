@@ -17,7 +17,7 @@
 				<h3>
 					{{
 						"".concat(
-							string(calVal.date + 1) +
+							String(calVal.date + 1) +
 								" " +
 								listToDisplay.get(
 									Math.floor((calVal.date + 1) / 2)
