@@ -195,6 +195,10 @@
 			transform: translate(-3px, -3px);
 		}
 
+		.title {
+			display: hidden;
+		}
+
 		p.user {
 			font-size: 0.8rem;
 			letter-spacing: 0.05em;
