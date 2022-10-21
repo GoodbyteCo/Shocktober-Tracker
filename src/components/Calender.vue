@@ -18,10 +18,10 @@
 		>
 			<template v-if="!calVal.isPadding">
 				<h3>
-					<span class="number"> {{ calVal.date + 1 }} </span>
-					<span class="title">
+					<div class="number">{{ calVal.date + 1 }}</div>
+					<div class="title">
 						{{ (filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : '' }}
-					</span>
+					</div>
 				</h3>
 
 				<p
@@ -124,22 +124,20 @@
 
 		padding: 0.22em 0.11em 0 0.5em;
 		margin: 0;
-
+		margin-bottom: auto;
 		text-align: left;
 
 		transform: translate(-5px, -5px);
 	}
 
 	.number {
-		padding-right: 0.3em;
-		margin-bottom: auto;
 		border-radius: 100%;
 		line-height: 2ch;
 		width: 2ch;
 	}
 
 	.title {
-		font-size: 1.75rem;
+		font-size: 1.25rem;
 	}
 
 	.today .number {
