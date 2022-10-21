@@ -1,13 +1,16 @@
 <template>
-	<section v-if="listToDisplay != undefined && listToDisplay.size > 0" id="calender">
-		<component 
+	<section
+		v-if="listToDisplay != undefined && listToDisplay.size > 0"
+		id="calender"
+	>
+		<component
 			v-for="calVal in calender"
-			:is="calVal.isPadding ? 'div' : 'a'" 
+			:is="calVal.isPadding ? 'div' : 'a'"
 			:key="calVal.date"
 			:class="{
-				'today': isToday(calVal.date),
-				'padding': calVal.isPadding,
-				'date': true,
+				today: isToday(calVal.date),
+				padding: calVal.isPadding,
+				date: true,
 			}"
 			:title="(filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : ''"
 			:href="(filmExist(calVal.date)) ? `https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}` : ''"
@@ -24,12 +27,16 @@
 
 				<p
 					v-for="[username, filmList] in userFilmList.entries()"
-					:class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase() ?? ''"
+					:class="
+						filmList
+							.get(listToDisplay.get(calVal.date)?.name ?? '')
+							?.toLowerCase() ?? ''
+					"
 					class="user"
 				>
 					{{ username }}
 				</p>
-				</template>
+			</template>
 		</component>
 	</section>
 </template>
@@ -37,7 +44,7 @@
 <script setup lang="ts">
 	import type { Film, WatchStatus } from '@/types';
 	import { getDaysInMonth, firstDayInMonthIndex } from '@/utils'
-	
+
 	type CalenderItem = {
 		isPadding: boolean
 		date: number
@@ -52,7 +59,7 @@
 
 	const props = defineProps<CalenderProps>()
 
-	const filmExist = (date: number)=> {
+	const filmExist = (date: number) => {
 		return props.listToDisplay.has(date)
 	}
 
@@ -65,31 +72,29 @@
 	const firstDay = firstDayInMonthIndex(props.year, props.month)
 
 	const paddingCalenderItems = Array(firstDay).fill("").map<CalenderItem>((_val, index) => {
-		return {isPadding: true, date: index - firstDay}
+		return { isPadding: true, date: index - firstDay }
 	})
-	
+
 	const calenderDays = Array(numberOfDays).fill("").map<CalenderItem>((_val, index) => {
-		return {isPadding: false, date: index}
+		return { isPadding: false, date: index }
 	})
-	
+
 	const calender = [...paddingCalenderItems, ...calenderDays]
 </script>
 
 <style scoped>
-	#calender
-	{
+	#calender {
 		display: grid;
 		grid-template-columns: repeat(7, 1fr);
 		gap: 4px;
-		
+
 		max-width: 1400px;
 		margin: auto;
 		padding: 10px;
 		padding-bottom: 80px;
 	}
 
-	a.date
-	{
+	a.date {
 		display: flex;
 		flex-direction: column;
 		aspect-ratio: 1 / 1;
@@ -102,19 +107,17 @@
 		transition: background-color 1.6s ease-in;
 	}
 
-	a.date.padding
-	{
+	a.date.padding {
 		opacity: 0;
 		pointer-events: none;
 	}
 
 	a.date:hover,
-	a.date:focus
-	{
+	a.date:focus {
 		background-color: var(--red);
 		transition: background-color 0.3s ease;
 	}
-	
+
 	h3 {
 		font-family: var(--numbers-font);
 		font-size: 2.5rem;
@@ -156,69 +159,62 @@
 		max-width: max-content;
 	}
 
-	p.user:last-child
-	{
+	p.user:last-child {
 		margin-bottom: 0.8em;
 	}
 
-	p.user.ontime
-	{
-		background-image: linear-gradient(90deg,
+	p.user.ontime {
+		background-image: linear-gradient(
+			90deg,
 			hsl(0, 100%, 38%, 0),
 			hsl(0, 100%, 38%, 1) 10%,
 			hsl(0, 100%, 38%, 0.8) 53%,
 			hsl(0, 100%, 38%, 1) 83%,
-			hsl(0, 100%, 38%, 0.5));
+			hsl(0, 100%, 38%, 0.5)
+		);
 	}
 
-	p.user.late
-	{
-		background-image: linear-gradient(90deg, 
+	p.user.late {
+		background-image: linear-gradient(
+			90deg,
 			hsl(0, 100%, 38%, 0),
 			hsl(0, 100%, 38%, 1) 10%,
 			hsl(0, 100%, 38%, 0.4) 30%,
 			hsl(0, 100%, 38%, 1) 50%,
 			hsl(0, 100%, 38%, 0.6) 70%,
 			hsl(0, 100%, 38%, 1) 90%,
-			hsl(0, 100%, 38%, 0.5));
+			hsl(0, 100%, 38%, 0.5)
+		);
 	}
 
-	@media (max-width: 975px)
-	{
-		#calender
-		{
+	@media (max-width: 975px) {
+		#calender {
 			gap: 3px;
 		}
 
-		h3
-		{
+		h3 {
 			font-size: 1.3rem;
 			transform: translate(-3px, -3px);
 		}
 
-		p.user
-		{
+		p.user {
 			font-size: 0.8rem;
 			letter-spacing: 0.05em;
 		}
 	}
-	
-	@media (max-width: 640px)
-	{
-		#calender
-		{
+
+	@media (max-width: 640px) {
+		#calender {
 			gap: 2px;
 		}
 
-		p.user
-		{
+		p.user {
 			font-size: 0.7rem;
 			letter-spacing: 0em;
 			margin: 0.25em 2px;
 		}
-		
-		a.date
-		{
+
+		a.date {
 			aspect-ratio: auto;
 		}
 	}
