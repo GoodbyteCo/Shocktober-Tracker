@@ -126,8 +126,6 @@
 		margin: 0;
 		margin-bottom: auto;
 		text-align: left;
-
-		transform: translate(-5px, -5px);
 	}
 
 	.number {
@@ -141,6 +139,7 @@
 	}
 
 	.today .number {
+		transform: translate(-5px, -5px);
 		background: var(--red);
 	}
 
