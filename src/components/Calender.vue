@@ -17,6 +17,11 @@
 				<h3>
 					{{ calVal.date + 1 }}
 				</h3>
+
+				<p class="title">
+					{{ (filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : '' }}
+				</p>
+
 				<p
 					v-for="[username, filmList] in userFilmList.entries()"
 					:class="filmList.get(listToDisplay.get(calVal.date)?.name ?? '')?.toLowerCase() ?? ''"
@@ -118,7 +123,6 @@
 
 		padding: 0.22em 0.11em 0;
 		margin: 0;
-		margin-bottom: auto;
 		border-radius: 100%;
 
 		line-height: 2ch;
@@ -131,6 +135,18 @@
 	.today h3
 	{
 		background: var(--red);
+	}
+
+	.title 
+	{
+		font-family: var(--body-font);
+		color: var(--black);
+		
+		margin-bottom: auto;
+		font-size: 1.3rem;
+		text-align: left;
+		max-width: max-content;
+		
 	}
 
 	p.user
@@ -185,6 +201,11 @@
 		{
 			font-size: 1.3rem;
 			transform: translate(-3px, -3px);
+		}
+
+		.title
+		{
+			display: none;
 		}
 
 		p.user
