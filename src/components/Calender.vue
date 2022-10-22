@@ -139,14 +139,7 @@
 
 	.title 
 	{
-		font-family: var(--body-font);
-		color: var(--black);
-
-	    margin: 0 0.5ch auto 0.5ch;
-		font-size: 1.25rem;
-		text-align: left;
-		max-width: max-content;
-		
+		display: none;
 	}
 
 	p.user
@@ -190,6 +183,20 @@
 			hsl(0, 100%, 38%, 0.5));
 	}
 
+	@media (min-width: 1400px) {
+		.title 
+		{
+			display: block;
+			margin: 0 0.5ch auto 0.5ch;
+			max-width: max-content;
+
+			font-family: var(--body-font);
+			color: var(--black);
+			font-size: 1.25rem;
+			text-align: left;
+		}
+	}
+
 	@media (max-width: 975px)
 	{
 		#calender
@@ -202,11 +209,6 @@
 			font-size: 1.3rem;
 			transform: translate(-3px, -3px);
 			margin-bottom: auto;
-		}
-
-		.title
-		{
-			display: none;
 		}
 
 		p.user
