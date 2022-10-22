@@ -141,9 +141,9 @@
 	{
 		font-family: var(--body-font);
 		color: var(--black);
-		
-		margin-bottom: auto;
-		font-size: 1.3rem;
+
+	    margin: 0 0.5ch auto 0.5ch;
+		font-size: 1.25rem;
 		text-align: left;
 		max-width: max-content;
 		
@@ -201,6 +201,7 @@
 		{
 			font-size: 1.3rem;
 			transform: translate(-3px, -3px);
+			margin-bottom: auto;
 		}
 
 		.title
