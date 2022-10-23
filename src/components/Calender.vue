@@ -12,7 +12,8 @@
 			:title="(filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : ''"
 			:href="(filmExist(calVal.date)) ? `https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}` : ''"
 			target="_blank"
-			v-tippy="(filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : ''">
+			:content="(filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : ''"
+			v-tippy="{followCursor: true}">
 			<template v-if="!calVal.isPadding">
 				<h3>
 					{{ calVal.date + 1 }}
@@ -32,7 +33,8 @@
 <script setup lang="ts">
 	import type { Film, WatchStatus } from '@/types';
 	import { getDaysInMonth, firstDayInMonthIndex } from '@/utils'
-	import { directive } from 'vue-tippy'
+import { followCursor } from 'tippy.js';
+	import { tippy } from 'vue-tippy'
 	
 	type CalenderItem = {
 		isPadding: boolean
