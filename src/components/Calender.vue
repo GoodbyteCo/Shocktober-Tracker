@@ -9,7 +9,10 @@
 				'padding': calVal.isPadding,
 				'date': true,
 			}"
-			:title="(filmExist(calVal.date)) ? listToDisplay.get(calVal.date)!.name : ''"
+			v-tippy="{
+				content: filmExist(calVal.date) ? listToDisplay.get(calVal.date)!.name : '',
+				followCursor: true,
+			}"
 			:href="(filmExist(calVal.date)) ? `https://letterboxd.com${listToDisplay.get(calVal.date)!.slug}` : ''"
 			target="_blank"
 		>
