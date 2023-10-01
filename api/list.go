@@ -30,6 +30,10 @@ func init(){
 
 }
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func ListHandler(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 	query := r.URL.Query()
