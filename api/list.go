@@ -94,7 +94,7 @@ func scrapeListValues(url string, ch chan filmFromList) {
 			wg.Add(1)
 			run := func() {
 				name := ein.ChildAttr("img", "alt")
-				slug := ein.ChildAttr(".film-poster", "data-film-slug")
+				slug := ein.ChildAttr(".film-poster", "data-target-link")
 				film := filmFromList{
 					Name:     name,
 					Slug:     slug,
